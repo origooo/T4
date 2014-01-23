@@ -7,16 +7,37 @@ Demonstration code: [<Ass code 1‐4> <abc>]
 ======================================*/
 
 #include <stdio.h>
-#define passwordMaxLength 50
+#define passwordMaxLength 9 // Actuall pw length is 8 characters. Adding one index for '\n'
 #define encryptStep 13
+
+char password[passwordMaxLength] = {' '};
+
+
+/*
+Using this instead of fgets().
+*/
+void getString(void) {
+	char c;
+	int n;
+	while (((c=getchar())!='\n') && n < passwordMaxLength-1) { // -1 leaves room for '\n'
+		password[n] = c;
+		n++;
+	}
+	password[n] = '\n';
+}
+
+void clearstdin(void) {
+	char temp;
+	while((temp=getchar())!='\n');
+}
 
 int main(int argc, char *argv[]) {
 
-	char password[passwordMaxLength] = {' '};
 restart:
 	printf("Password: ");
-	fgets(password, passwordMaxLength, stdin);
-
+	getString();
+	clearstdin();
+	//fgets(password, passwordMaxLength, stdin);
 	printf("Encrypted: ");
 	for (int i = 0; i < sizeof(password) / sizeof(char); i++) {
 		if ((int)password[i] >= (int)'a' && (int)password[i] <= (int)'m') {
