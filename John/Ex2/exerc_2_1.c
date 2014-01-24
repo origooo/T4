@@ -13,7 +13,8 @@ Demonstration code: [<Ass code 1‐4> <abc>]        Important , No code no bonus
 
 void without_copy(char *input, char *string_one);
 void with_copy(char *input, char *string_two);
-void readfile(FILE *name);
+void readfile();
+
 
 #define MAX 100
 
@@ -29,42 +30,55 @@ int main(int argc, char *argv[])
 	with_copy(input, string_two);
 
 	printf("Reading from a file:\n");
-	FILE *file;
-	readfile(file);
+	readfile();
 }
 
 
 void without_copy(char *input, char *string_one)
 {
+
+	printf("Before copy: %s\n", string_one);
+
 	int i = 0;
 	for(i = 0; i < MAX - 1; i++) {
 		string_one[i] = input[i];
 	}
 
-	printf("Copied without: %s\n", string_one);
+	printf("Copied using my copy: %s\n", string_one);
 }
 void with_copy(char *input, char *string_two)
 {
+	printf("Before copy: %s\n", string_two);
+
 	strcpy(string_two, input);
 
-	printf("Copied with: %s\n", string_two);
+	printf("Copied with library: %s\n", string_two);
 
 }
 
-void readfile(FILE *name)
+void readfile()
 {
+	FILE *file;
+	char filename[MAX], string1[MAX], string2[MAX];
 
-	char filename[] = "test.txt";
-	name = fopen(filename, "r");
+	printf("Please input the filename:\n");
+	scanf("%s", filename);
 
 	char string[MAX];
 
-	if(name == NULL)
-		printf("Error! Unable to open %s", filename);
+	if((file = fopen(filename, "r")) == NULL) {
+		printf("Error: Unable to open %s, please make sure the filename is correct\n", filename);
+		return;
+	}
 
-	fgets(string, MAX, name);
+	file = fopen(filename, "r");
 
-	printf("This was read from the file:\n%s", string);
+	fgets(string, MAX, file);
 
-	fclose(name);
+	printf("This was read from the file:\n%s\n", string);
+
+	with_copy(string, string1);
+	without_copy(string, string2);
+
+	fclose(file);
 }
