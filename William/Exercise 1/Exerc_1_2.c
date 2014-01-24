@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+// WIlliam, you are counting white space, not words. Try entering this: "ab        def    ".
+
 main()
 {
 	char input[100];
