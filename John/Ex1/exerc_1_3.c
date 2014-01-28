@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 {
 	char word[MAX];
 
-
 	while(1) {
 
 		printf("Please enter a word\n");
@@ -30,15 +29,17 @@ int main(int argc, char *argv[])
 		int i = 0;
 		for(i = 0; i < MAX -1; i++) {
 
-			if(isgraph(word[i]) && toupper(word[i]) >= 'A' && toupper(word[i]) <= 'M')		word[i] += 13;
-			else if(isgraph(word[i]) && toupper(word[i]) >= 'M' && toupper(word[i]) <= 'Z')	word[i] -= 13;
+			//The 2nd if might be needed if i'm presuming correct input.
+			if(isgraph(word[i]) && toupper(word[i]) >= 'A' 
+				&& toupper(word[i]) <= 'M')	word[i] += 13;
 
+			else if(isgraph(word[i]) && toupper(word[i]) >= 'M' 
+				&& toupper(word[i]) <= 'Z')	word[i] -= 13;
 		}
 
 		printf("Encoded: %s\n", word);
 	}
 }
-
 
 void flushstdin()
 {

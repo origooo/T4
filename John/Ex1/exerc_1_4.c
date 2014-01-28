@@ -25,20 +25,20 @@ void flushstdin();
 
 int main(int argc, char *argv[])
 {
+	//Using as a boolean to keep track of playing state.
 	int playing = 1;
 
 	while(playing){
 		run();
 		printf("Do you wish to play again(y\\n)?\n");
-		char reply[1];
-		fscanf(stdin, "%s", reply);
+		char reply;
+		scanf("%c", &reply);
 
-		if(strcmp(reply, "y") == 0){
+		if(tolower(reply) == 'y'){
 			printf("Playing again!\n");
-			playing = 1;
 		}
 
-		else if(strcmp(reply, "n") == 0) {
+		else if(tolower(reply) == 'n') {
 			printf("Ok, thanks for playing!\n");
 			playing = 0;
 		}
@@ -48,11 +48,13 @@ int main(int argc, char *argv[])
 			playing = 0;
 		}
 	}
+
+	return 0;
 }
 
 void run()
 {
-	int guess, guesses;
+	int guess, guesses = 0;
 	int number = generate_number();
 
 	//Uncomment to see number.
