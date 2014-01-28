@@ -20,7 +20,10 @@ int main(void) {
 		frequency[table[i]] += 1;
 	}
 
-	char x[] = {'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', '\0'};
+	char x[MAX];
+	for (i=0; i<=MAX; i++) {
+		x[i] = 'x';
+	}
 
 	int j;
 	for (i=0; i<=MAX_NUMBER; i++) {
