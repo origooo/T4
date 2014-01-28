@@ -27,22 +27,31 @@ int main(int argc, char *argv[])
 		printf("Not a pallindrome\n");
 	}
 
-	else {
+	else 
 		printf("It is a pallindrome!\n");
-	}
-
-	return 0;
 
 }
 
 int is_palindrome(char *word)
 {
-	char *start = word;
-	char *end = &word[strlen(word) - 2];
+	//Remove 1 as it counts the terminating char
+	int size = (strlen(word) - 1), i = 0;
 
-	int i = 0;
-	while(*(start+i) == *(end-i)) {
-		i++;
+	char *start = word;
+	char *end = &word[size-1];
+
+	i = 0;
+	while(i <= size && !isspace(word[i])) {
+
+		if(*(start+i) == *(end-i)){
+			i++;
+		}
+
+		else
+			//Not
+			return 0;
 	}
-	return (*start == *end) ? 1 : 0;
+
+	if(i == size) return 1;
+	else return 0;
 }

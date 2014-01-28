@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
 	}
 
 	free(person);
-	return 0;
 }
 
 int digit_multiply(int number)

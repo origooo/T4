@@ -43,14 +43,10 @@ int main(int argc, char *argv[])
 	input(list, 9);
 	print_queue(list);
 	queue_status(list);
-	printf("Attempting to add to queue, " 
-		"this is the returned int: %d \n", input(list, 200));
+	printf("Attempting to add to queue, this is the returned int: %d \n", input(list, 200));
 	print_queue(list);
 	remove(list);
-	printf("Removing and attempting again," 
-		"this is the returned int: %d \n", input(list, 200));
-
-	return 0;
+	printf("Removing and attempting again, this is the returned int: %d \n", input(list, 200));
 
 }
 
