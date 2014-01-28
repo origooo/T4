@@ -1,28 +1,56 @@
-/*====================================
-File name: exerc_2_1.c (or cpp) Date: 2014‐01‐23
-Group Number: 3
-Members that contributed:
-	Patrik Bäckström,
-	John Burchell,
-	William Granli
-Demonstration code: [<Ass code 1‐4> <abc>]
-======================================*/
-
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
-#define TEXT_LENGTH 30
+#define STRING_MAX_LENGTH 100
 
-int main(int argc, char *argv[]) {
+//method declarations
+void *without (char input_string[STRING_MAX_LENGTH]);
+void *with (char input_string[STRING_MAX_LENGTH]);
+void *read_file();
 
-	char temp, str1[TEXT_LENGTH];//, str2[TEXT_LENGTH];
+//global variables
+char internal_buffer[STRING_MAX_LENGTH];
 
-	printf("Write something, fool: ");
-	fgets(str1, TEXT_LENGTH, stdin);
+//main function
+void main (void) {
+	char input_string[STRING_MAX_LENGTH];
 
-	for (int i = 0; i < sizeof(str1); i++) {
-		str2[i] = str1[i];
+	printf("Enter a string.\n");
+	
+	fgets(input_string, STRING_MAX_LENGTH, stdin);
+	
+	without(input_string);
+	with(input_string);
+	read_file();
+ }
+
+//without strcpy()
+void *without (char input_string[STRING_MAX_LENGTH]) {
+	
+ 	int i;
+	for (i = 0; i <= sizeof(input_string); i++) {
+		internal_buffer[i] = input_string[i];
 	}
+	
+	printf("String without strcpy() == %s\n", internal_buffer);
+}
 
-	return 0;
+//with strcpy()
+void *with (char input_string[STRING_MAX_LENGTH]) {
+	strcpy(input_string, internal_buffer);
+	
+	printf("String with strcpy() == %s\n", internal_buffer);
+}
+
+//reading from the file
+void *read_file() {
+
+	FILE *file;
+	file = fopen("string.txt", "r");
+
+	fgets(internal_buffer, STRING_MAX_LENGTH, file);
+
+	printf("String from file == %s\n", internal_buffer);
+	
+	fclose(file);
 }
