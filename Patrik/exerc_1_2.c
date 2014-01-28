@@ -12,10 +12,10 @@ Demonstration code: [<Ass code 1‐4> <abc>]
 
 int main() {
 	
-	char sentenceArray[MAX+1] = {' '}; // Adding one index to compensate for end of string cut-off.
+	char sentenceArray[MAX+1]; // Adding one index to compensate for end of string cut-off.
 	int numOfWords = 0;
-	printf("Write a sentence under %i characters: ", MAX);
-	fgets(sentenceArray, sizeof(sentenceArray), stdin);
+	printf("\t# Write a sentence (max length %i characters): ", MAX);
+	fgets(sentenceArray, MAX, stdin);
 
 	for (int i = 0; i < sizeof(sentenceArray); i++) {
 		if (i > 0 && isspace(sentenceArray[i]) && isalnum(sentenceArray[i-1])) {
@@ -26,7 +26,7 @@ int main() {
 		}
 	}
 
-	printf("\nYou wrote: %s\nNumber of words: %i\n\n", sentenceArray, numOfWords);
+	printf("\n\t# You wrote: %s\n\t# Number of words: %i\n\n", sentenceArray, numOfWords);
 
 	return 0;
 }

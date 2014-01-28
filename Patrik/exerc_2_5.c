@@ -40,9 +40,6 @@ int main(int argc, char *argv[]) {
 
 	draw_histogram(fptr);
 	
-	//printf("Randoms:"); for (int i = 0; i < MAX_ARRAY_SIZE; i++) {printf("%i, ", table[i]);} printf("\n");// Print array to test...
-	//printf("Occasions: "); for (int i = 0; i < MAX_NUMBER; i++) {printf("%i, ", frequency[i]);} printf("\n"); // Print array to test...
-
 	return 1337;
 }
 
