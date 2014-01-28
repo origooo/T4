@@ -32,9 +32,12 @@ int main(int argc, char *argv[])
 		printf("%d ", ints[i]);
 	}
 	printf("\nAnd the values after doubling them by pointers are: \n");
+
+	//Point to the front of the ints array.
+	int *cur_int = ints;
 	for(i = 0; i < MAX - 1; i++){
-		*(ints + i) *= 2;
-		printf("%d ", *(ints + i));
+		*(cur_int + i) *= 2;
+		printf("%d ", *(cur_int + i));
 	}
 
 	printf("\n");
