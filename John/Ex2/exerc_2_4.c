@@ -27,8 +27,11 @@ int main(int argc, char *argv[])
 		printf("Not a pallindrome\n");
 	}
 
-	else 
+	else {
 		printf("It is a pallindrome!\n");
+	}
+
+	return 0;
 
 }
 

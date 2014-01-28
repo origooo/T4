@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 
 	printf("Reading from a file:\n");
 	readfile();
+
+	return 0;
 }
 
 

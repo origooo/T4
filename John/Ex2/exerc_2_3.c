@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 		printf("String 1 and 2 are the same\n");
 	else
 		printf("String 1 and 2 are not the same\n");
+
+	return 0;
 }
 
 
