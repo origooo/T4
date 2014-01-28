@@ -38,11 +38,8 @@ int is_palindrome(char *word)
 	int size = (strlen(word) - 1), i = 0;
 
 	char *start = word;
-	char *end = word;
-	//Set to the end, must be a nicer way than this.
-	//Has to be -1 here otherwise the pointer is on the final index
-	//aka '/0'
-	end = (end+(size - 1));
+	char *end = &word[size-1];
+
 	i = 0;
 	while(i <= size && !isspace(word[i])) {
 
