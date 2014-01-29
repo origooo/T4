@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 #define MAX 9
 
 //reads the input
@@ -74,12 +73,12 @@ int main(void) {
 	char pnr[MAX];
 
 	while (1) {
-	read(pnr);
-	if (pnr[0]=='q') {
-		break;
-	}
-	else {
-		control(pnr);
-	}
+		read(pnr);
+		if (pnr[0]=='q') {
+			break;
+		}
+		else {
+			control(pnr);
+		}
 	}
 }
