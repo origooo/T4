@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
  	    	currentPos=currentPos->next;
  	    }
 
+        //free up the alloc'd memory
  	    while((currentPos = head) != NULL) {
             head = currentPos->next;
             free(currentPos);
@@ -82,7 +83,7 @@ REGTYPE* add_first(REGTYPE* temp, int data) {
     // Adds a record first i list and set the field tal to data
 	REGTYPE *newNode = malloc(sizeof(REGTYPE));
 	//Means it's the head.
-	newNode->number = random_num();
+	newNode->number = data;
 	newNode->next = temp;
 
     printf("\nAdding %d to the front:\n", newNode->number);
