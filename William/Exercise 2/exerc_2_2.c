@@ -4,7 +4,7 @@
 
 #define MAX 15
 
-void main (void) {
+int main (void) {
 	
 	char int_array[MAX];
 	
@@ -28,4 +28,6 @@ void main (void) {
 		*(int_array + i) *= 2;
 		printf("%d ", *(int_array + i));
 	}
+	
+	return 0;
 }

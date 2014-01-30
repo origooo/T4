@@ -32,5 +32,7 @@ int main(void) {
 			printf("%c ", x[frequency[i]]);
 		}
 	}
+	
+	return 0;
 }
 

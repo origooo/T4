@@ -24,8 +24,8 @@ int main(void) {
 	
 	while (1) {
 	
-	char in;
- 	scanf("%c", &in);
+		fchar in;
+ 		scanf("%c", &in);
 
 		if (in=='M') {
 			if (ex.dir=='N') {
