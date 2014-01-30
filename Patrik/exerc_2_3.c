@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 		printf("\n");
 	}
 
-	return 1337;
+	return 0;
 }
 
 int cmpWithout(char *str1, char *str2) {

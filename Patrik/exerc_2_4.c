@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 	}
 	1 == palindrome(*(argv + 1)) ? printf("\n\t# %s is a palindrome!\n\n", argv[1]) : printf("\n\t# %s is NOT a palindrome!\n\n", argv[1]);
 
-	return 1337;
+	return 0;
 }
 
 int palindrome(char *str) {
