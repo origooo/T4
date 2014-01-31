@@ -25,36 +25,63 @@ REGTYPE* add_first(REGTYPE* temp, int data);
 
 int main(int argc, char *argv[]) {
 	
-	int nr = 0;
+	int n = 0;
 	REGTYPE *currentPos, *head = NULL;
 	
 	srand(time(0)); // Random seed
+	
 	head = randomize();
 	currentPos = head;
- 
+
+
 	while(currentPos != NULL) {
-		printf("\nZip Code %d: %d", nr++, currentPos->number);
+		printf("\nList index %d: %d", n++, currentPos->number);
 		currentPos=currentPos->next;
 	}
- 
+
 	while((currentPos = head) != NULL) {
 		head = currentPos->next;
 		free(currentPos);
 	}
 
-	system("PAUSE");
 	return 0;
 }
 
-
 REGTYPE* randomize(void) {
-	int nr, i = 0;
-	REGTYPE *top, *old, *item;
 
-	return top;
+	REGTYPE *currentPos, *currentPrev, *first, *prevTemp;
+
+	first = add_first(malloc(sizeof(REGTYPE)),(rand() % 100));
+	currentPos = first;
+	currentPrev = first;
+	prevTemp = NULL;
+
+	for (int i = 0; i < MAX; i++) {
+		currentPos->next = malloc(sizeof(REGTYPE));
+		prevTemp = currentPos->next;
+
+		printf("--- Index %i\n", i);
+		printf("This: %p\n", currentPos);
+		printf("Num: %i (random)\n", currentPos->number);
+		printf("Next: %p\n", currentPos->next);
+		printf("Prev: %p\n", currentPos->prev);
+		
+		currentPos = currentPos->next;
+		currentPos->number = rand() % 100 + 1;
+		currentPos->prev = currentPrev;
+		currentPrev = prevTemp;
+
+		
+
+	}
+	return first;
 }
 
 
 REGTYPE* add_first(REGTYPE* temp, int data) {
-	// Adds a record first i list and set the field tal to data
+	
+	temp->number = data;
+	temp->prev = NULL;
+
+	return temp;
 }
