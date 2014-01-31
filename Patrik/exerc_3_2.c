@@ -11,13 +11,15 @@ Demonstration code: [<Ass code 1‐4> <abc>]
 #include <stdio.h>
 
 int search_number(int, int[], int);
-void sort(int, int[], int);
+void sort(int, int[]);
 void swap(int, int*, int);
+
+int size;
 
 int main(int argc, char *argv[]) {
 
-	int array[] = {1,2,34,5,67,3,23,12,13,10,21,45,2,7,6,19};
-	int size = sizeof(array)/sizeof(*array);
+	int array[] = {1,2,34,5,67};
+	size = sizeof(array)/sizeof(*array);
 	int lookForNum = 0;
 	int numFoundAtIndex = 0;
 
@@ -48,7 +50,7 @@ int main(int argc, char *argv[]) {
 		i == size - 1 ? printf("\n") : printf(", ");
 	}
 
-	sort(0, array, size);
+	sort(0, array);
 
 	printf("\t# Array after sorting: \t");
 	for (int i = 0; i < size; i++) {
@@ -68,13 +70,13 @@ int search_number(int number, int array[], int size) {
 	return index;
 }
 
-void sort(int startIndex, int array[], int size) {
+void sort(int startIndex, int array[]) {
 	int minVal = array[startIndex], indexOfMinVal = startIndex;
 	for (int i = startIndex; i < size; i++) {
 		array[i] < minVal ? (minVal = array[i], indexOfMinVal = i) : 0;
 	}
 	swap(indexOfMinVal, array, startIndex);
-	startIndex < size ? sort(startIndex+1, array, size) : 0;
+	startIndex < size ? sort(startIndex+1, array) : 0;
 }
 
 void swap(int indexOfMinVal, int* array, int currentStart) {

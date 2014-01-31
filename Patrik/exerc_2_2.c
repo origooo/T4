@@ -5,7 +5,7 @@ Members that contributed:
 	Patrik Bäckström,
 	John Burchell,
 	William Granli
-Demonstration code: [<Ass code 1‐4> <abc>]
+Demonstration code: 50511
 ======================================*/
 
 #include <stdio.h>

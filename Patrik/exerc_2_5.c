@@ -5,14 +5,14 @@ Members that contributed:
 	Patrik Bäckström,
 	John Burchell,
 	William Granli
-Demonstration code: [<Ass code 1‐4> <abc>]
+Demonstration code: 50542
 ======================================*/
 
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
-#define MAX_NUMBER 100
+#define MAX_NUMBER 10
 #define MAX_ARRAY_SIZE 20
 
 void create_random(int *);
