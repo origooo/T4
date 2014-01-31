@@ -35,18 +35,19 @@ int main(int argc, char *argv[])
 {
 
 	//Assign memory for the struct
-	struct Ssn *person = malloc(sizeof(struct Ssn));
 	char input[SSN_LEN];
 
 	while(1){
-
+		
+		struct Ssn *person = malloc(sizeof(struct Ssn));
 		readPerson(input);
 		if(input[0] == 'q') break;
 		convert(input, person);
 		controlDigit(input, person) ? printf("Valid SSN\n") : printf("Invalid SSN\n");
+		free(person);
+
 	}
 
-	free(person);
 }
 
 int digit_multiply(int number)
@@ -69,7 +70,7 @@ int controlDigit(const char *personr, struct Ssn *person)
 
 		checksum = (year+month+day+digits) % 10;
 
-		return (10 - checksum) == person->check ? 1 : 0;
+		return ((10 - checksum)%10) == person->check ? 1 : 0;
 	}
 
 	//Not in correct range, not a valid id.

@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
 	draw_histogram(fptr);
 	
-	return 1337;
+	return 0;
 }
 
 void draw_histogram(int *fptr) {
