@@ -5,7 +5,7 @@ Members that contributed:
 	Patrik Bäckström,
 	John Burchell,
 	William Granli
-Demonstration code: [<Ass code 1‐4> <abc>]
+Demonstration code: 54917
 ======================================*/
 
 #include <stdio.h>
@@ -27,20 +27,13 @@ int computer_choice(int pile);
 int toggle( int player );
 void clear_stdin();
 
-/***************************************************
- *
- *    MAIN
- *
- ***************************************************/
-
 int main() {
 
 	srand(time(0));
 
 	do {
-	int pile = MAX_COINS, player = HUMAN, n_coins;
-
-	printf("\n\t# Welcome to NIM!\n");
+		int pile = MAX_COINS, player = HUMAN, n_coins;
+		printf("\n\t# Welcome to NIM!\n");
 
 		while(1) {	
 
