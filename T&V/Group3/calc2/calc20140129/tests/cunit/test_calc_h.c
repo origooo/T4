@@ -38,7 +38,7 @@ void testUnsignedIntLimits(void){
   pressExec(calc);
   //Should fail because the int has overflowed, this should just 
   //add 1 as expected
-  CU_ASSERT(strcmp(getBuffer(calc), "4294967295"));
+  CU_ASSERT(!strcmp(getBuffer(calc), "4294967295"));
 }
 
 void testSignedIntLimits(void){
@@ -62,10 +62,12 @@ void testSignedIntLimits(void){
   pressExec(calc);
   //Again, like the Unsigned version, the calculator should be able to handle
   //larger numbers than this. 
-  CU_ASSERT(strcmp(getBuffer(calc), "2147483648"));
+  CU_ASSERT(!strcmp(getBuffer(calc), "2147483648"));
 }
 
 void testClear(void){
+
+  //Clear the buffer test
   pressReset(calc);
   CU_ASSERT(!strcmp(getBuffer(calc), ""));
 }
@@ -84,6 +86,7 @@ void testEquation(void){
   pressExec(calc);
   CU_ASSERT(!strcmp(getBuffer(calc), "8"));
 
+  //Check that when 3 * is pressed it returns input squared
   testClear();
   pressDigit(calc, '3');
   pressMult(calc);
@@ -94,6 +97,7 @@ void testEquation(void){
 
 void testNegatives()
 {
+  //Check that negatives are correclty handled
   testClear();
   pressDigit(calc, '2');
   pressMinus(calc);
@@ -105,7 +109,7 @@ void testNegatives()
 }
 
 void testPlus() {
- //plus
+ //Check that addition works as expected
   testClear();
   pressDigit(calc, '2');
   CU_ASSERT(!strcmp(getBuffer(calc), "2"));
@@ -116,7 +120,7 @@ void testPlus() {
 }
 
 void testMin() {
- //min
+ //check that subtraction works as expected
   testClear();
   pressDigit(calc, '1');
   CU_ASSERT(!strcmp(getBuffer(calc), "1"));
@@ -127,7 +131,7 @@ void testMin() {
 }
 
 void testMul() {
- //mul
+ //test that multiplication works as expected
   testClear();
   pressDigit(calc, '4');
   CU_ASSERT(!strcmp(getBuffer(calc), "4"));
@@ -138,7 +142,7 @@ void testMul() {
 }
 
 void testDiv() {
-  //div
+  //test that division works correctly
   testClear();
   pressDigit(calc, '1');
   pressDigit(calc, '6');
@@ -150,6 +154,8 @@ void testDiv() {
 }
 
 void testMaxBuffer() {
+
+  //test that the claculator handles 
   testClear();
   pressDigit(calc, '1');
   pressDigit(calc, '2');
@@ -168,6 +174,7 @@ void testMaxBuffer() {
   pressDigit(calc, '6');
   CU_ASSERT(!strcmp(getBuffer(calc), "123456789123456"));
 
+  //Test that adding another number gives an error.
   pressDigit(calc, '1');
   CU_ASSERT(!strcmp(getBuffer(calc), "[error]"));
   CU_ASSERT(calc->err == 1);
