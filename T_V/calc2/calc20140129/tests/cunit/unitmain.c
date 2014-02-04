@@ -17,9 +17,15 @@ int main(void) {
   }
 
   /* add tests to suite */
-  if(NULL == CU_add_test(pSuite1, "Test case 1", testCase1) || NULL == CU_add_test(pSuite1, "Test case 2", testCase2)
-    || NULL == CU_add_test(pSuite1, "Test case 3", testEquation) || NULL == CU_add_test(pSuite1, "Test case 4", testNegatives)
-    || NULL == CU_add_test(pSuite1, "Test case 5", testLimits)
+  if(NULL == CU_add_test(pSuite1, "Test Equation Chain", testEquation) || NULL == CU_add_test(pSuite1, "Test negatives", testNegatives)
+    || NULL == CU_add_test(pSuite1, "Test Unsigned Int Limits ", testUnsignedIntLimits) 
+    || NULL == CU_add_test(pSuite1, "Test Signed Int Limits ", testSignedIntLimits) 
+    || NULL == CU_add_test(pSuite1, "Test Addition ", testPlus )
+    || NULL == CU_add_test(pSuite1, "Test Subtraction ", testMin)
+    || NULL == CU_add_test(pSuite1, "Test Multiplication ", testMul)
+    || NULL == CU_add_test(pSuite1, "Test Division ", testDiv)
+    || NULL == CU_add_test(pSuite1, "Test Max Buffer ", testMaxBuffer)
+
      // || NULL == CU_add_test(pSuite1, ...[next test case]...)
      ) {
     CU_cleanup_registry();
