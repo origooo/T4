@@ -1,5 +1,5 @@
 /*====================================
-File name: exerc_3_3.c (or cpp) Date: 2014‐01‐30
+File name: exerc_3_3.c (or cpp) Date: 2014‐01‐31
 Group Number: 3
 Members that contributed:
 	Patrik Bäckström,
@@ -25,7 +25,7 @@ REGTYPE* add_first(REGTYPE* temp, int data);
 
 int main(int argc, char *argv[]) {
 	
-	int n = 0;
+	int n = 0, test;
 	REGTYPE *currentPos, *head = NULL;
 	
 	srand(time(0)); // Random seed
@@ -60,18 +60,16 @@ REGTYPE* randomize(void) {
 		currentPos->next = malloc(sizeof(REGTYPE));
 		prevTemp = currentPos->next;
 
-		printf("--- Index %i\n", i);
-		printf("This: %p\n", currentPos);
-		printf("Num: %i (random)\n", currentPos->number);
-		printf("Next: %p\n", currentPos->next);
-		printf("Prev: %p\n", currentPos->prev);
+		printf(">>> Index %i. This: %p. Previous: %p. Next: %p. Number: %i\n", i, currentPos, currentPos->prev, currentPos->next, currentPos->number);
+		//printf("This: %p\n", currentPos);
+		//printf("Num: %i (random)\n", currentPos->number);
+		//printf("Next: %p\n", currentPos->next);
+		//printf("Prev: %p\n", currentPos->prev);
 		
 		currentPos = currentPos->next;
 		currentPos->number = rand() % 100 + 1;
 		currentPos->prev = currentPrev;
 		currentPrev = prevTemp;
-
-		
 
 	}
 	return first;
