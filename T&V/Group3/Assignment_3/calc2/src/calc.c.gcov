@@ -1,0 +1,279 @@
+        -:    0:Source:calc.c
+        -:    0:Graph:calc.gcno
+        -:    0:Data:calc.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "calc.h"
+        -:    2:
+        -:    3:#include <stdlib.h>
+        -:    4:#include <stdio.h>
+        -:    5:
+        -:    6:////////////////////////////////////////////////////////////////////////////////
+        -:    7:// Internal functions
+        -:    8:
+function resetBuffer called 27 returned 100% blocks executed 100%
+       27:    9:void resetBuffer(CalcStatePtr state) {
+        -:   10:  int i;
+      432:   11:  for(i=0; i<MAXDIGITS; i++)
+branch  0 taken 94%
+branch  1 taken 6% (fallthrough)
+      405:   12:    state->buffer[i] = '\0';
+       27:   13:  state->bufferNegative = 0;
+       27:   14:}
+        -:   15:
+function reset called 14 returned 100% blocks executed 100%
+       14:   16:void reset(CalcStatePtr state) {
+       14:   17:  resetBuffer(state);
+call    0 returned 100%
+       14:   18:  state->bufferActive = 1;
+       14:   19:  state->err = 0;
+       14:   20:  state->op = NoOp;
+       14:   21:  state->operand = 0;
+       14:   22:  state->hasOperand = 0;
+       14:   23:}
+        -:   24:
+function isDigit called 358 returned 100% blocks executed 100%
+      358:   25:inline int isDigit(char c) {
+      358:   26:  return c >= '0' && c <= '9';
+branch  0 taken 76% (fallthrough)
+branch  1 taken 24%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        -:   27:}
+        -:   28:
+function valueOf called 45 returned 100% blocks executed 100%
+       45:   29:inline int valueOf(char digit) {
+       45:   30:  return (int) (digit - '0');
+        -:   31:}
+        -:   32:
+function firstAvailableBufferPos called 61 returned 100% blocks executed 100%
+       61:   33:char* firstAvailableBufferPos(CalcStatePtr state) {
+       61:   34:  char* ptr = state->buffer;
+      348:   35:  while(isDigit(*ptr))
+call    0 returned 100%
+branch  1 taken 79%
+branch  2 taken 21% (fallthrough)
+      226:   36:    ptr++;
+       61:   37:  return ptr;
+        -:   38:}
+        -:   39:
+function bufferPosIsValid called 61 returned 100% blocks executed 100%
+       61:   40:int bufferPosIsValid(CalcStatePtr state, char* pos) {
+       61:   41:  return pos - state->buffer < MAXDIGITS;
+        -:   42:}
+        -:   43:
+function getBufferVal called 28 returned 100% blocks executed 100%
+       28:   44:int getBufferVal(CalcStatePtr state) {
+       28:   45:  char* currPos = state->buffer;
+       28:   46:  int value = 0;
+        -:   47:  
+       28:   48:  if(state->err){
+branch  0 taken 7% (fallthrough)
+branch  1 taken 93%
+        2:   49:    return 0;
+        -:   50:  }
+        -:   51:
+       97:   52:  while(isDigit(*currPos)) {
+call    0 returned 100%
+branch  1 taken 63%
+branch  2 taken 37% (fallthrough)
+       45:   53:    value = value*10 + valueOf(*currPos);
+call    0 returned 100%
+       45:   54:    currPos++;
+        -:   55:  }
+        -:   56:  
+       26:   57:  if(state->bufferNegative) {
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+        1:   58:    value = -value;
+        -:   59:  }
+        -:   60:
+       26:   61:  return value;
+        -:   62:}
+        -:   63:
+function setBufferVal called 14 returned 100% blocks executed 100%
+       14:   64:void setBufferVal(CalcStatePtr state, int val) {
+       14:   65:  if(val < 0) {
+branch  0 taken 29% (fallthrough)
+branch  1 taken 71%
+        4:   66:    state->bufferNegative=1;
+        4:   67:    val = -val;
+        -:   68:  } else {
+       10:   69:    state->bufferNegative=0;
+        -:   70:  }
+        -:   71:
+       14:   72:  sprintf(state->buffer, "%d", val);
+       14:   73:}
+        -:   74:
+function doMemorizedOp called 26 returned 100% blocks executed 94%
+       26:   75:void doMemorizedOp(CalcStatePtr state) {
+        -:   76:  int temp;
+        -:   77:
+       26:   78:  if(state->hasOperand) {
+branch  0 taken 54% (fallthrough)
+branch  1 taken 46%
+       14:   79:    switch(state->op) {
+branch  0 taken 36%
+branch  1 taken 21%
+branch  2 taken 29%
+branch  3 taken 14%
+branch  4 taken 0%
+        -:   80:    case Plus:
+        5:   81:      state->operand += getBufferVal(state);
+call    0 returned 100%
+        5:   82:      break;
+        -:   83:
+        -:   84:    case Minus:
+        3:   85:      state->operand -= getBufferVal(state);
+call    0 returned 100%
+        3:   86:      break;
+        -:   87:
+        -:   88:    case Times:
+        4:   89:      state->operand *= getBufferVal(state);
+call    0 returned 100%
+        4:   90:      break;
+        -:   91:
+        -:   92:    case Div:
+        2:   93:      temp = getBufferVal(state);
+call    0 returned 100%
+        2:   94:      if(temp == 0) {
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:   95:	       state->err = 1;
+        -:   96:      } else {
+        1:   97:	       state->operand /= temp;
+        -:   98:      }
+        2:   99:      break;
+        -:  100:
+        -:  101:    default:
+        -:  102:      //Here for convetion, serves no purpose. 
+    #####:  103:      break;
+        -:  104:    }
+       14:  105:    state->bufferActive=0;
+       14:  106:    setBufferVal(state, state->operand);
+call    0 returned 100%
+        -:  107:  }
+       26:  108:}
+        -:  109:
+        -:  110:////////////////////////////////////////////////////////////////////////////////
+        -:  111:// Interface functions
+        -:  112:
+function mkCalcState called 1 returned 100% blocks executed 100%
+        1:  113:CalcStatePtr mkCalcState() {
+        1:  114:  CalcStatePtr state = (CalcStatePtr) malloc(sizeof CalcState);
+        1:  115:  reset(state);
+call    0 returned 100%
+        1:  116:  return state;
+        -:  117:}
+        -:  118:
+function freeCalcState called 1 returned 100% blocks executed 100%
+        1:  119:void freeCalcState(CalcStatePtr state) {
+        1:  120:  free(state);
+        1:  121:}
+        -:  122:
+function getBuffer called 34 returned 100% blocks executed 100%
+       34:  123:const char* getBuffer(CalcStatePtr state) {
+        -:  124:  static char errStr[] = "[error]";
+        -:  125:  static char* bufferCopy;
+       34:  126:  if(state->err) {
+branch  0 taken 6% (fallthrough)
+branch  1 taken 94%
+        2:  127:    return errStr;
+        -:  128:  } else {
+       32:  129:    bufferCopy = malloc(MAXDIGITS+2);
+       32:  130:    if(state->bufferNegative)
+branch  0 taken 9% (fallthrough)
+branch  1 taken 91%
+        3:  131:      sprintf(bufferCopy, "-%s", state->buffer);
+        -:  132:    else
+       29:  133:      sprintf(bufferCopy, "%s", state->buffer);
+       32:  134:    return bufferCopy;
+        -:  135:  }
+        -:  136:}
+        -:  137:
+function pressDigit called 61 returned 100% blocks executed 100%
+       61:  138:void pressDigit(CalcStatePtr state, char digit) {
+        -:  139:  char* bufferPos;
+        -:  140:
+        -:  141:  //Else is never invoked, cannot have a buffer
+       61:  142:  if(!state->bufferActive) {
+branch  0 taken 23% (fallthrough)
+branch  1 taken 77%
+       14:  143:    if(state->hasOperand) {
+branch  0 taken 93% (fallthrough)
+branch  1 taken 7%
+       13:  144:      resetBuffer(state);
+call    0 returned 100%
+       13:  145:      state->bufferActive=1;
+        -:  146:    } else {
+        1:  147:      reset(state);
+call    0 returned 100%
+        -:  148:    }
+        -:  149:  }
+        -:  150:
+       61:  151:  bufferPos = firstAvailableBufferPos(state);
+call    0 returned 100%
+       61:  152:  if(!bufferPosIsValid(state, bufferPos)) {
+call    0 returned 100%
+branch  1 taken 3% (fallthrough)
+branch  2 taken 97%
+        2:  153:    state->err = 1;
+        -:  154:  } else {
+       59:  155:    *bufferPos = digit;
+       59:  156:    *(bufferPos+1) = '\0';
+        -:  157:  }
+       61:  158:}
+        -:  159:
+function pressOp called 14 returned 100% blocks executed 100%
+       14:  160:void pressOp(CalcStatePtr state, enum CalcOp op) {
+       14:  161:  if(state->bufferActive) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+       14:  162:    doMemorizedOp(state);
+call    0 returned 100%
+       14:  163:    state->bufferActive = 0;
+       14:  164:    state->op = op;
+       14:  165:    state->operand = getBufferVal(state);
+call    0 returned 100%
+       14:  166:    state->hasOperand=1;
+        -:  167:  }
+       14:  168:}
+        -:  169:
+function pressPlus called 5 returned 100% blocks executed 100%
+        5:  170:void pressPlus(CalcStatePtr state) {
+        5:  171:  pressOp(state, Plus);
+call    0 returned 100%
+        5:  172:}
+        -:  173:
+function pressMinus called 3 returned 100% blocks executed 100%
+        3:  174:void pressMinus(CalcStatePtr state) {
+        3:  175:  pressOp(state, Minus);
+call    0 returned 100%
+        3:  176:}
+        -:  177:
+function pressMult called 4 returned 100% blocks executed 100%
+        4:  178:void pressMult(CalcStatePtr state) {
+        4:  179:  pressOp(state, Times);
+call    0 returned 100%
+        4:  180:}
+        -:  181:
+function pressDiv called 2 returned 100% blocks executed 100%
+        2:  182:void pressDiv(CalcStatePtr state) {
+        2:  183:  pressOp(state, Div);
+call    0 returned 100%
+        2:  184:}
+        -:  185:
+function pressExec called 12 returned 100% blocks executed 100%
+       12:  186:void pressExec(CalcStatePtr state) {
+       12:  187:  doMemorizedOp(state);
+call    0 returned 100%
+       12:  188:  state->hasOperand = 0;
+       12:  189:  state->op = NoOp;
+       12:  190:}
+        -:  191:
+function pressReset called 12 returned 100% blocks executed 100%
+       12:  192:void pressReset(CalcStatePtr state) {
+       12:  193:  reset(state);
+call    0 returned 100%
+       12:  194:}
+        -:  195:

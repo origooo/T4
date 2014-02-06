@@ -25,6 +25,8 @@ int main(void) {
     || NULL == CU_add_test(pSuite1, "Test Multiplication ", testMul)
     || NULL == CU_add_test(pSuite1, "Test Division ", testDiv)
     || NULL == CU_add_test(pSuite1, "Test Max Buffer ", testMaxBuffer)
+    || NULL == CU_add_test(pSuite1, "Test Operands ", testOperands)
+
 
      // || NULL == CU_add_test(pSuite1, ...[next test case]...)
      ) {
