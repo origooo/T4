@@ -26,18 +26,13 @@ int main(int argc, char *argv[]) {
 
 	printf("\n\t* Memmory address of 'numbers' array: %p\n", &numbers);
 	printf("\t* Integer value of numbers[0]: %i\n", numbers[0]);
-	printf("\t* Size of an integer: %lu bytes, size of 'numbers' array: %lu\n", sizeof(int), sizeof(numbers));
+	printf("\t* Size of an integer: %zu bytes, size of 'numbers' array: %zu\n", sizeof(int), sizeof(numbers));
 
 	printf("\n\t* Doubling values of 'numbers':\n\t\tIndex\tBefore\tAfter");
 	for (int i = 0; i < ARRAY_SIZE; i++) {
 		int num = *(ptr + i);
 		printf("\n\t\t%i\t%i\t%i", i+1, numbers[i], num*2);
 	}
-	//printf("\n\t\tAfter:  ");
-	//for (int i = 0; i < MAX; i++) {
-	//	printf("\t%i", num*2);
-	//	if (i < MAX-1) printf(", ");
-	//}
 	printf("\n\n");
 
 	return 0;
