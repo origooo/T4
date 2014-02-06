@@ -16,16 +16,16 @@ Demonstration code: [<Ass code 1‐4> <abc>]
 #define FILE_NAME "PersonRegister.txt"
 
 typedef struct {
-	char firstName[MAX];
-	char lastName[MAX];
-	char persNumber[13];
+	char firstName[MAX+1];
+	char lastName[MAX+1];
+	char persNumber[13+1];
 } PERSON;
 
-PERSON input_record(void);
-void write_new_file(PERSON *inrecord);
+void input_record(PERSON *);
+void write_new_file(PERSON *);
 void printfile(void);
-void search_by_firstname(char *name);
-void append_file(PERSON *inrecord);
+void search_by_firstname(char *);
+void append_file(PERSON *);
 void enterToContinue(int);
 
 int main(int argc, char *argv[]) {
@@ -33,9 +33,9 @@ int main(int argc, char *argv[]) {
 	int loop = 1, option = 0;
 	
 	PERSON *person = malloc(sizeof(PERSON));
-	strcpy(person->firstName, "John");
-	strcpy(person->lastName, "Burchell");
-	strcpy(person->persNumber, "19880923-1234");
+	strcpy(person->firstName, "TestTestTestTestTest");
+	strcpy(person->lastName, "Testson");
+	strcpy(person->persNumber, "11112233-4445");
 
 	while (loop) {
 		printf("\n\t#----------------------------------------");
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 				write_new_file(person);
 				break;
 			case 2:
-				*person = input_record();
+				input_record(person);
 				append_file(person);
 				break;
 			case 3: break;
@@ -88,24 +88,22 @@ void append_file(PERSON *inrecord) {
 	fclose(file);
 }
 
-PERSON input_record(void) {
+void input_record(PERSON *inrecord) {
 	
-	PERSON *inrecord = malloc(sizeof(PERSON));
 	char fname[MAX], lname[MAX],pn[13], temp;
-	
+
+	while (getchar() != '\n');
 	printf("\tFirst name: ");
-	scanf("%s", fname);
+    fgets(fname, MAX, stdin);
 	strncpy(inrecord->firstName, fname, sizeof(inrecord->firstName));
 
 	printf("\tLast name: ");
-	scanf("%s", lname);
+    fgets(lname, MAX, stdin);
 	strncpy(inrecord->lastName, lname, sizeof(inrecord->lastName));
 	
 	printf("\tPersonal number: ");
-	scanf("%s", pn);
+    fgets(pn, 13, stdin);
 	strncpy(inrecord->persNumber, pn, sizeof(inrecord->persNumber));
-
-	return *inrecord;
 }
 
 void printfile(void) {
@@ -125,7 +123,7 @@ void printfile(void) {
 		listEntry++;
 		0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
 	}
-
+    fclose(file);
 	free(temp);
 }
 
