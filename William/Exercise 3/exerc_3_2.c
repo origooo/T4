@@ -1,17 +1,18 @@
 #include <stdio.h>
 
+int size;
+
 void print(int tab[], int size) {
 	
  	printf("Sorted array:\n");
 	int j=0;
 	for(j=0; j<=size-1; j++) {
- 	printf("%d, ", tab[j]);
+ 		printf("%d, ", tab[j]);
 	}
-	
 }
 
 
-void sort(int n, int tab[], int size) {
+void sort(int n, int *tab) {
 
 	int i = n;
 	int min = tab[n];
@@ -32,7 +33,7 @@ void sort(int n, int tab[], int size) {
 
 	n++;
 	if (n != size-1) {
-		sort(n, tab, size);
+		sort(n, tab);
 	}
 	else {
 		print(tab, size);
@@ -50,14 +51,13 @@ int search(int number, int tab[], int size) {
 		}
 		i++;
 	}
-	
 }
 
 int main(void) {
 	int tab[] = {1, 3, 2, 9, 5, 4, 6,
 				20, 9,1, 3, 2, 4, 6, 5};
 	int number = 4;
-	int size = sizeof(tab) / sizeof(int);
+	size = sizeof(tab) / sizeof(int);
 	
 	printf("Initial array:\n");
 	int j=0;
@@ -68,7 +68,7 @@ int main(void) {
 
 	search(number, tab, size);
 	
-	sort(0, tab, size);
+	sort(0, tab);
 	
 	return 0;
 }

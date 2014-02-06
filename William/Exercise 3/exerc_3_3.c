@@ -17,36 +17,57 @@ REGTYP* add_first(REGTYP* temp, int data);
 //###### Main program #######
 int main(int argc, char *argv[])
 {
-	int nr = 0;
-	REGTYP *akt_post, *head=NULL;
-	srand(time(0)); // Random seed
+
+	//create structs
+	REGTYP *current, *head=NULL;
+
+	srand(time(0)); 
 	head = randomize();
-	akt_post = head;
+	current = head;
 	
-	while(akt_post!=NULL) {
-		printf("\n Post nr %d : %d", nr++, akt_post ->number);
-		akt_post=akt_post ->next;
+ 	int nr = 0;
+	while(current!=NULL) {
+		printf("\n Post nr %d : %d", nr++, current ->number);
+		current = current->next;
 	}
 	
-	while((akt_post=head)!=NULL) {
-		head = akt_post->next;
-		free(akt_post);
+	head = add_first(head, rand()%10);
+	current = head;
+	
+	while((current=head)!=NULL) {
+		head = current->next;
+		free(current);
 	}
 
+	printf("\n\n");
 	system("PAUSE");
 	return 0;
 }
 
 
 REGTYP* randomize(void) {
-	int nr, i=0;
-	REGTYP *top, *old, *item;
-
+	
+ 	int nr, i = 0;
+ 	REGTYP *top=NULL, *old=NULL, *item=NULL;
+	
+	    for (i=0; i<=MAX; i++) {
+	    	nr = rand() %10;
+			item = (REGTYP*)malloc(sizeof(REGTYP));
+			item -> number = nr;
+			item -> next = top;
+			top = item;
+	}
+	
 	return(top);
 }
 
 
 REGTYP* add_first(REGTYP* temp, int data){
-	// Adds a record first i list and set the field tal to data
-
+	
+	REGTYP *first = malloc(sizeof(REGTYP));
+	
+	first -> number = data;
+	first -> next = temp;
+	
+	return first;
 }
