@@ -60,11 +60,7 @@ REGTYPE* randomize(void) {
 		currentPos->next = malloc(sizeof(REGTYPE));
 		prevTemp = currentPos->next;
 
-		printf(">>> Index %i. This: %p. Previous: %p. Next: %p. Number: %i\n", i, currentPos, currentPos->prev, currentPos->next, currentPos->number);
-		//printf("This: %p\n", currentPos);
-		//printf("Num: %i (random)\n", currentPos->number);
-		//printf("Next: %p\n", currentPos->next);
-		//printf("Prev: %p\n", currentPos->prev);
+		//printf(">>> Index %i. This: %p. Previous: %p. Next: %p. Number: %i\n", i, currentPos, currentPos->prev, currentPos->next, currentPos->number);
 		
 		currentPos = currentPos->next;
 		currentPos->number = rand() % 100 + 1;
