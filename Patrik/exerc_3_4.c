@@ -52,7 +52,6 @@ int main(int argc, char *argv[]) {
 		scanf("%i",&option);
 
 		cls();
-		//printf("\n");
 		switch (option) {
 			case 1:
 				write_new_file(person);
@@ -102,20 +101,17 @@ void append_file(PERSON *inrecord) {
 
 void input_record(PERSON *inrecord) {
 	
-	char fname[MAX], lname[MAX],pn[13], temp;
+	char fname[MAX], lname[MAX],pn[13];
 
 	while (getchar() != '\n');
-	//printf("\tFirst name: ");
 	printf("\t\033[0;31;1mFirst name:\033[00m ");
 	fgets(fname, MAX, stdin);
 	strncpy(inrecord->firstName, fname, sizeof(inrecord->firstName));
 
-	//printf("\tLast name: ");
 	printf("\t\033[0;31;1mLast name:\033[00m ");
 	fgets(lname, MAX, stdin);
 	strncpy(inrecord->lastName, lname, sizeof(inrecord->lastName));
 	
-	//printf("\tPersonal number: ");
 	printf("\t\033[0;31;1mPersonal number:\033[00m ");
 	fgets(pn, 13, stdin);
 	strncpy(inrecord->persNumber, pn, sizeof(inrecord->persNumber));
@@ -131,20 +127,19 @@ void search() {
 		printf("\n\t\033[0;31;1m#\033[00m 3 Return");
 		printf("\n\t\033[0;31;1m#----------------------------------------\033[00m");
 		printf("\n\t\033[0;31;1mSELECT >>>\033[00m ");
-		scanf("%i",&option);
+		(void*)scanf("%i",&option);
 		while (getchar() != '\n');
 
 		cls();
-		//printf("\n");
 		switch (option) {
 			case 1:
 				printf("\n\t\033[0;31;1mType name to search for: \033[00m");
-				fgets(searchFor,MAX,stdin);
+				(void*)fgets(searchFor,MAX,stdin);
 				search_by_firstname(searchFor);
 				break;
 			case 2:
 				printf("\n\t\033[0;31;1mType name to search for: \033[00m");
-				fgets(searchFor,MAX,stdin);
+				(void*)fgets(searchFor,MAX,stdin);
 				search_by_lastname(searchFor);
 				break;
 			case 3:
@@ -157,12 +152,13 @@ void search() {
 
 void search_by_firstname(char *name) {
 	
+	FILE *file;
+	
 	PERSON *temp = malloc(sizeof(PERSON));
 	int listEntry = 0;
 	char nameString[MAX+1];
 	strncpy(nameString, name, MAX+1);
 
-	FILE *file;
 	file = fopen(FILE_NAME,"rb");
 
 	printf("\n");
@@ -173,7 +169,7 @@ void search_by_firstname(char *name) {
 			printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 			printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 			listEntry++;
-			0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
+			0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
 		}
 	}
     fclose(file);
@@ -182,12 +178,13 @@ void search_by_firstname(char *name) {
 
 void search_by_lastname(char *name) {
 	
+	FILE *file;
+	
 	PERSON *temp = malloc(sizeof(PERSON));
 	int listEntry = 0;
 	char nameString[MAX+1];
 	strncpy(nameString, name, MAX+1);
 
-	FILE *file;
 	file = fopen(FILE_NAME,"rb");
 	
 	printf("\n");
@@ -198,7 +195,7 @@ void search_by_lastname(char *name) {
 			printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 			printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 			listEntry++;
-			0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
+			0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
 		}
 	}
     fclose(file);
@@ -221,15 +218,15 @@ void printfile(void) {
 		printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 		printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 		listEntry++;
-		0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
+		0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
 	}
     fclose(file);
 	free(temp);
 }
 
 void enterToContinue(int listEntry) {
-	printf("\n\t\t  >>> Showing no %i to %i <<<\n\t\t>>> Press ENTER to continue <<<\n", listEntry - 4, listEntry);
 	int enter = 0;
+	printf("\n\t\t  >>> Showing no %i to %i <<<\n\t\t>>> Press ENTER to continue <<<\n", listEntry - 4, listEntry);
 	while (enter != '\r' && enter != '\n') { enter = getchar(); }
 }
 

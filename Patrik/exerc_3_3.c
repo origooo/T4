@@ -25,10 +25,10 @@ REGTYPE* add_first(REGTYPE* temp, int data);
 
 int main(int argc, char *argv[]) {
 	
-	int n = 0, test;
+	int n = 0;
 	REGTYPE *currentPos, *head = NULL;
 	
-	srand(time(0)); // Random seed
+	srand(time(0));
 	
 	head = randomize();
 	currentPos = head;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 REGTYPE* randomize(void) {
 
 	REGTYPE *currentPos, *currentPrev, *first, *prevTemp;
-
+	
 	first = add_first(malloc(sizeof(REGTYPE)),(rand() % 100));
 	currentPos = first;
 	currentPrev = first;
