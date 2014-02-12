@@ -16,6 +16,7 @@ Demonstration code: [<Ass code 1‐4> <abc>]        Important , No code no bonus
 
 int main(int argc, char *argv[]) 
 {
+
 	char input[MAX];
 	printf("Please enter up to %d characters\n", MAX);
 	fgets(input, sizeof(input), stdin);
@@ -33,5 +34,5 @@ int main(int argc, char *argv[])
 
 	printf("You entered: %d words with a limit of %d characters\n", count, MAX);
 
-	return 0;
+	
 }

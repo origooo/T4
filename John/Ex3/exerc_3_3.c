@@ -5,7 +5,7 @@ Members that contributed:
         John Burchell,
         Patrik Bäckström,
         William Granli
-Demonstration code: [<Ass code 1‐4> <abc>]
+Demonstration code: 46504 [<Ass code 1‐4> <abc>]
 ======================================*/
 
 #include <stdio.h>
@@ -17,19 +17,19 @@ Demonstration code: [<Ass code 1‐4> <abc>]
 typedef struct q {
         int number;
         struct q *next;
-        struct q *prev;
+        //struct q *prev;
 } REGTYPE;
 
 REGTYPE* randomise(void);
 REGTYPE* add_first(REGTYPE* temp, int data);
 int random_num();
 
-int main(int argc, char *argv[]) {
+int main() {
         
         int nr = 0;
         REGTYPE *currentPos, *head = NULL;
         
-        srand(time(0)); // Random seed
+        srand(5); // Random seed
         head = randomise();
         currentPos = head;
 
@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
  	    	currentPos=currentPos->next;
  	    }
 
-        //free up the alloc'd memory
  	    while((currentPos = head) != NULL) {
             head = currentPos->next;
             free(currentPos);
@@ -59,10 +58,10 @@ int main(int argc, char *argv[]) {
 
 
 REGTYPE* randomise(void) {
-        int nr, i = 0;
-        REGTYPE *top, *old, *item;
+        int i = 0;
+        REGTYPE *top, *item;
 
-        //Currently no links top is empty
+        //Currently no links, so old and top are empty
         top = NULL;
 
         printf("Making %d nodes:\n", MAX);
