@@ -18,18 +18,18 @@ int main(int argc, char* argv[]) {
 	// Checking amount of arguments.
 	if (argc != 6) {
 		printf("Not correct amount of arguments (5 needed). Exiting...\n");
-		return 0;
+		return 1;
 	}
 	// Checking that no argument is larger than its max value
 	if (atoi(*(argv+1)) > 1 || atoi(*(argv+2)) > 4 || atoi(*(argv+3)) > 2 || atoi(*(argv+4)) > 1 || atoi(*(argv+5)) > 1) {
 		printf("One or more arguments is too large (MAX 1/4/2/1/1). Exiting...\n");
-		return 0;
+		return 1;
 	}
 	// Checking that no argument is lesser than 0
 	for (int i = 0; i < argc; i++) {
 		if (atoi(argv[i]) < 0) {
 			printf("One or more arguments is less than 0. Exiting...\n");
-			return 0;
+			return 1;
 		}
 	}
 

@@ -22,6 +22,9 @@ typedef struct {
 
 int main(int argc, char* argv[]) {
 	
+	unsigned char one[4];
+
+
 	// Checking amount of arguments.
 	if (argc != 2) {
 		printf("\tERROR! Not correct amount of arguments (1 needed). Exiting...\n");
@@ -33,10 +36,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	unsigned char arg = strtol(argv[1],NULL,16);
-	
+	char *end;
+	unsigned char arg = strtol(argv[1],&end,16);
+
 	// Cheking that argument is within range 0x00-0xFF
-	if (arg < 0 || arg > 255) { // 0 and 255?
+	if (*end || arg < 0 || arg > 255) {
 		printf("\tERROR! Argument outside span 00-FF. Exiting...\n");
 		return 1;
 	}
@@ -48,11 +52,11 @@ int main(int argc, char* argv[]) {
 	mb.br1 = arg >> 1;
 	mb.br2 = arg;
 
-	printf("\n\t\033[1;34mArg HEX: %#x, BIN: ", arg);
+	printf("\n\t\033[0;36;40m Arg HEX: %#x, BIN: ", arg);
 	for(int i = 7; i >= 0; i--) {
 		printf("%i", (arg >> i) % 2 == 1 ? 1 : 0);
 	}
-	printf("\033[00m\n\tNAME\tVALUE\n\t-------------\n\tEngine:\t%i\n\tGear:\t%i\n\tKey:\t%i\n\tBreak1:\t%i\n\tBreak2:\t%i\n\n",mb.engine,mb.gear,mb.key,mb.br1,mb.br2);
+	printf(" \033[00m\n\tNAME\tVALUE\n\t-------------\n\tEngine:\t%i\n\tGear:\t%i\n\tKey:\t%i\n\tBreak1:\t%i\n\tBreak2:\t%i\n\n",mb.engine,mb.gear,mb.key,mb.br1,mb.br2);
 
 	return 0;
 }
