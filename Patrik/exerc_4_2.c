@@ -21,9 +21,11 @@ typedef struct {
 } myByte;
 
 int main(int argc, char* argv[]) {
-	
-	unsigned char one[4];
 
+	char *end;
+	unsigned char arg;
+	myByte mb;
+	int i;
 
 	// Checking amount of arguments.
 	if (argc != 2) {
@@ -36,8 +38,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	char *end;
-	unsigned char arg = strtol(argv[1],&end,16);
+	arg = strtol(argv[1],&end,16);
 
 	// Cheking that argument is within range 0x00-0xFF
 	if (*end || arg < 0 || arg > 255) {
@@ -45,7 +46,6 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	myByte mb;
 	mb.engine = arg >> 7;
 	mb.gear = arg >> 4;
 	mb.key = arg >> 2;
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	mb.br2 = arg;
 
 	printf("\n\t\033[0;36;40m Arg HEX: %#x, BIN: ", arg);
-	for(int i = 7; i >= 0; i--) {
+	for(i = 7; i >= 0; i--) {
 		printf("%i", (arg >> i) % 2 == 1 ? 1 : 0);
 	}
 	printf(" \033[00m\n\tNAME\tVALUE\n\t-------------\n\tEngine:\t%i\n\tGear:\t%i\n\tKey:\t%i\n\tBreak1:\t%i\n\tBreak2:\t%i\n\n",mb.engine,mb.gear,mb.key,mb.br1,mb.br2);
