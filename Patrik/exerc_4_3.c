@@ -7,6 +7,7 @@ Members that contributed:
 	William Granli
 Demonstration code: 57030
 ======================================*/
+
 #define IN_PORT 0x0400
 #define OUT_PORT 0x0402
 #define REG8(x) *((unsigned char *)(x))

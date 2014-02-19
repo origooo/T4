@@ -7,7 +7,9 @@ Members that contributed:
 	William Granli
 Demonstration code: 52215
 4:5 53070
-======================================*/#include <stdio.h>
+======================================*/
+
+#include <stdio.h>
 
 #define KBD_DATA 0x09C0
 #define KBD_STATUS 0x09C1
