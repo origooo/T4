@@ -127,19 +127,19 @@ void search() {
 		printf("\n\t\033[0;31;1m#\033[00m 3 Return");
 		printf("\n\t\033[0;31;1m#----------------------------------------\033[00m");
 		printf("\n\t\033[0;31;1mSELECT >>>\033[00m ");
-		(void*)scanf("%i",&option);
+		scanf("%i",&option);
 		while (getchar() != '\n');
 
 		cls();
 		switch (option) {
 			case 1:
 				printf("\n\t\033[0;31;1mType name to search for: \033[00m");
-				(void*)fgets(searchFor,MAX,stdin);
+				fgets(searchFor,MAX,stdin);
 				search_by_firstname(searchFor);
 				break;
 			case 2:
 				printf("\n\t\033[0;31;1mType name to search for: \033[00m");
-				(void*)fgets(searchFor,MAX,stdin);
+				fgets(searchFor,MAX,stdin);
 				search_by_lastname(searchFor);
 				break;
 			case 3:
@@ -169,7 +169,7 @@ void search_by_firstname(char *name) {
 			printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 			printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 			listEntry++;
-			0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
+			0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
 		}
 	}
     fclose(file);
@@ -195,7 +195,7 @@ void search_by_lastname(char *name) {
 			printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 			printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 			listEntry++;
-			0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
+			0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
 		}
 	}
     fclose(file);
@@ -218,7 +218,7 @@ void printfile(void) {
 		printf("\t\033[0;31m* Last name:\033[00m %s", temp->lastName);
 		printf("\t\033[0;31m* Personal number:\033[00m %s\n", temp->persNumber);
 		listEntry++;
-		0 == listEntry % 5 ? enterToContinue(listEntry) : (void)0;
+		0 == listEntry % 5 ? enterToContinue(listEntry) : 0;
 	}
     fclose(file);
 	free(temp);
