@@ -6,7 +6,7 @@
 
 prop_seq3() ->
 	?FORALL({From,To,Incr},{int(),int(),int()},
-		collect({From,To,Incr},
+		%collect({From,To,Incr},
 			?IMPLIES(((Incr /= 0) and (From /= To)),
 				try 
 					List = lists:seq(From,To,Incr),
@@ -18,8 +18,8 @@ prop_seq3() ->
 							or
 						((To > From) and (Incr < 0))
 				end
-			)
-		)
+			) %% ?IMPLIES ends
+		%) %% Collect ends
 	).
 
 check_incr([],_Incr) ->
@@ -42,11 +42,17 @@ check_incr(_List,_Incr) ->
 %%   length(List) - 1 == length(lists:delete(DeleteThis,List))
 
 prop_list_delete() ->
-	?FORALL({List,DeleteThis},
-		{oneof([list(int()),list(bool())]),oneof([int(),bool()])},
-		?IMPLIES(((List /= []) and (lists:member(DeleteThis,List))),
-				length(List) - 1 == length(lists:delete(DeleteThis,List))
-		)
+	?FORALL(List,
+		oneof([list(int()),list(bool()),list(char()),list(binary())]),
+		%collect({List},
+			%?IMPLIES(List /= [],
+				try
+					length(List) - 1 == length(lists:delete(lists:last(List),List))
+				catch
+					error:_ -> List == []
+				end
+			%) %% ?IMPLIES ends
+		%) %% Collect ends
 	).
 
 %%%----------------------------------------------------------------------------
@@ -64,8 +70,8 @@ prop_list_add_delete() ->
 		%collect({List,Element},
 			?IMPLIES(List /= [],
 					List == lists:delete(Element,lists:append([Element],List))
-			)
-		%)
+			) %% ?IMPLIES ends
+		%) %% Collect ends
 	).
 
 %%%----------------------------------------------------------------------------
@@ -74,11 +80,14 @@ prop_list_add_delete() ->
 
 prop_day() ->
 	?FORALL({Year,Month},
-		{choose(1970,2030),choose(1,12)},
-		collect({Year, Month},
+		{year(),month()},
+		%collect({Year, Month},
 			getDay({Year,Month}) == calendar:last_day_of_the_month(Year,Month)
-		)
+		%) %% Collect ends
 	).
+
+year() -> ?LET(N,int(),abs(N)).
+month() -> ?LET(N,int(),abs(N rem 12) + 1).
 
 getDay({Year,Month}) ->
 		Leap = case calendar:is_leap_year(Year) of
