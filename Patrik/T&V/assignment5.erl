@@ -32,28 +32,28 @@ check_incr(_List,_Incr) ->
 	false.
 
 %%%----------------------------------------------------------------------------
-%%% 2. Testing lists:delete() on integer lists and boolean lists.
+%%% 2. Testing if deleting an existing list element returns the length of the original list minus one. Works for all datatypes possibly generated
 %%%----------------------------------------------------------------------------
-%% Failure:
-%%   Generated element is not present in List,
-%%   List is empty
 %%
-%% The following equalities hold for lists let through above criteria:
-%%   length(List) - 1 == length(lists:delete(DeleteThis,List))
+%%	The following equalities should hold:
+%%	If element exists: length(List) - 1 == length(lists:delete(DeleteThis,List))
+%%	If element does not exist: List == lists:delete(DeleteThis,List)
 
 prop_list_delete() ->
-	?FORALL(List,
-		oneof([list(int()),list(bool()),list(char()),list(binary())]),
+	?FORALL({List,DeleteThis},
+		{getList(),getElement()},
 		%collect({List},
-			%?IMPLIES(List /= [],
-				try
-					length(List) - 1 == length(lists:delete(lists:last(List),List))
-				catch
-					error:_ -> List == []
+				case lists:member(DeleteThis,List) of
+					true -> length(List) - 1 == length(lists:delete(DeleteThis,List));
+					false -> List == lists:delete(DeleteThis,List)
 				end
-			%) %% ?IMPLIES ends
 		%) %% Collect ends
 	).
+
+getList() -> 
+	oneof([list(int()),list(char()),list(bool()),list(binary()),list(bitstring())]).
+getElement() -> 
+	oneof([int(),char(),bool(),binary(),bitstring()]).
 
 %%%----------------------------------------------------------------------------
 %%% 3. Checking list properties
@@ -106,10 +106,14 @@ getDay({Year,Month}) ->
 %%%----------------------------------------------------------------------------
 
 prop_time_to_seconds() ->
-	?FORALL({_,{H,M,S}},erlang:localtime(),
+	?FORALL({H,M,S},{hours(),minutes(),seconds()},
 		calc_seconds({H,M,S}) == calendar:time_to_seconds({H,M,S})
 	).
 
 calc_seconds({H,M,S}) ->
 	(H * 60 * 60) + (M * 60) + S.
+
+hours() -> ?LET(X,int(),abs(X) rem 24).
+minutes() -> ?LET(X,int(),abs(X) rem 60).
+seconds() -> ?LET(X,int(),abs(X) rem 60).
 
