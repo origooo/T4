@@ -18,7 +18,7 @@ int size;
 
 int main(int argc, char *argv[]) {
 
-	int array[] = {1,2,34,5,67};
+	int array[] = {1,2,34,5,67,12,54,74,23,431,23,1,5,87,56,34,54,94};
 	size = sizeof(array)/sizeof(*array);
 	int lookForNum = 0;
 	int numFoundAtIndex = 0;
