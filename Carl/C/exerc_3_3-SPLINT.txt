@@ -1,0 +1,70 @@
+exerc_3_3.c: (in function main)
+exerc_3_3.c:31:8: Function srand expects arg 1 to be unsigned int gets time_t:
+                     time(0)
+  To allow arbitrary integral types to match any integral type, use
+  +matchanyintegral.
+exerc_3_3.c:40:2: Variable head is dependent if loop is not taken, but
+                     independent in while body.
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. (Use -branchstate
+  to inhibit warning)
+   exerc_3_3.c:40:2: if loop is not taken:
+   exerc_3_3.c:34:2: Storage head becomes dependent
+   exerc_3_3.c:40:2: in while body:
+   exerc_3_3.c:39:3: Storage head becomes owned (through alias currentPos)
+exerc_3_3.c:26:14: Parameter argc not used
+  A function parameter is not used in the body of the function. If the argument
+  is needed for type compatibility or future plans, use /*@unused@*/ in the
+  argument declaration. (Use -paramuse to inhibit warning)
+exerc_3_3.c:26:26: Parameter argv not used
+exerc_3_3.c: (in function randomize)
+exerc_3_3.c:54:20: New fresh storage (type void *) passed as implicitly temp
+                      (not released): malloc(sizeof(REGTYPE))
+  A memory leak has been detected. Storage allocated locally is not released
+  before the last reference to it is lost. (Use -mustfreefresh to inhibit
+  warning)
+exerc_3_3.c:54:20: Possibly null storage passed as non-null param:
+                      add_first (malloc(sizeof(REGTYPE)), ...)
+  A possibly null pointer is passed as a parameter corresponding to a formal
+  parameter with no /*@null@*/ annotation.  If NULL may be used for this
+  parameter, add a /*@null@*/ annotation to the function parameter declaration.
+  (Use -nullpass to inhibit warning)
+exerc_3_3.c:54:20: Passed storage not completely defined (storage pointed to by
+    [result of malloc] is undefined): add_first (malloc(sizeof(REGTYPE)), ...)
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  (Use -compdef to inhibit warning)
+exerc_3_3.c:66:13: Arrow access from possibly null pointer currentPos:
+                      currentPos->number
+  A possibly null pointer is dereferenced.  Value is either the result of a
+  function which may return null (in which case, code should check it is not
+  null), or a global, parameter or structure field declared with the null
+  qualifier. (Use -nullderef to inhibit warning)
+   exerc_3_3.c:65:16: Storage currentPos may become null
+exerc_3_3.c:71:9: Variable first used after being released
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to an only global). (Use -usereleased to inhibit warning)
+   exerc_3_3.c:67:3: Storage first released
+exerc_3_3.c: (in function add_first)
+exerc_3_3.c:78:2: Implicitly only storage temp->prev (type struct q *) not
+                     released before assignment: temp->prev = NULL
+  A memory leak has been detected. Only-qualified storage is not released
+  before the last reference to it is lost. (Use -mustfreeonly to inhibit
+  warning)
+exerc_3_3.c:80:9: Implicitly temp storage temp returned as implicitly only:
+                     temp
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  (Use -temptrans to inhibit warning)
+exerc_3_3.c:80:9: Null storage temp->prev derivable from return value: temp
+  Function returns a possibly null pointer, but is not declared using
+  /*@null@*/ annotation of result.  If function may return NULL, add /*@null@*/
+  annotation to the return value declaration. (Use -nullret to inhibit warning)
+   exerc_3_3.c:78:15: Storage temp->prev becomes null
+exerc_3_3.c:23:10: Function exported but not used outside exerc_3_3: randomize
+  A declaration is exported, but not used outside this module. Declaration can
+  use static qualifier. (Use -exportlocal to inhibit warning)
+   exerc_3_3.c:72:1: Definition of randomize
+exerc_3_3.c:24:10: Function exported but not used outside exerc_3_3: add_first
+   exerc_3_3.c:81:1: Definition of add_first
+
