@@ -11,6 +11,9 @@ cd bash-4.0
 ./configure
 make
 sudo make install
+cd ..
+rm -i Bash-4.0
+rm -i bash-4.0.tar.gz
 
 # Install xdotool
 sudo apt-get install xdotool
