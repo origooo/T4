@@ -75,6 +75,7 @@ namespace msv {
 		        findParkingSpot(vd);
                 // Design your control algorithm here depending on the input data from above.
 		        practiceParking(vd);
+		        exit(0);
 	        }
 
 	        return ModuleState::OKAY;
@@ -127,6 +128,7 @@ namespace msv {
 
         void Driver::practiceParking(VehicleData& vd) {
 
+        	std::cout << "Starting parking routine" << std::endl;
 
         	bool parking = true;
         	int count = 0;
@@ -138,36 +140,39 @@ namespace msv {
 		    VehicleControl vc;
             double desiredSteeringWheelAngle = 0;
 
-        	while(parking && count < 10) {
+        	while(parking && count < 11) {
 
+        		vc.setSpeed(0);
 		    	sleep(2.5);
 
-			    if(count < 5) {
-	        		std::cout << "Going backward with a turn!" << std::endl;
+		    	//Go forwards a little to allow for parking
+				if(count < 2) {
+                	desiredSteeringWheelAngle = -10; 
+                	vc.setSpeed(1);
+			    }
+
+			    //Reverse backwards with wheels right
+			    else if(count < 6) {
                 	desiredSteeringWheelAngle = 25; 
                 	vc.setSpeed(-1);
 			    }
 
-			    else if(count < 7) {
-	        		std::cout << "Going forwards, with slight turn!" << std::endl;
-                	desiredSteeringWheelAngle = 4.5;
+			    //Go fowards a little to the right
+			    else if(count < 8) {
+                	desiredSteeringWheelAngle = 5;
 		    		vc.setSpeed(1);
 			    }
 
-			    else if(count < 9) {
-			    	std::cout << "Going backwards, with no turn!" << std::endl;
-                	desiredSteeringWheelAngle = 0;
+			    //Go Backwards directly
+			    else if(count < 10) {
+                	desiredSteeringWheelAngle = 5;
 		    		vc.setSpeed(-1);
 			    }
 
-				std::cout << "Inc count" << std::endl;
 			    count++;
 
 		        vc.setSteeringWheelAngle(desiredSteeringWheelAngle * Constants::DEG2RAD);
-
-		        // Create container for finally sending the data.
 		        Container c(Container::VEHICLECONTROL, vc);
-		        // Send container.
 		        getConference().send(c);
 
 			}
@@ -188,23 +193,74 @@ namespace msv {
         	bool found = false;
 
 		    VehicleControl vc;
-        	Container containerVehicleData;
+        	Container containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+		    Container containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+		    SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
-            double desiredSteeringWheelAngle = 0;
+		    //Move this out later on, should be its own method most likely.
+		    //Keep going forwards to get a ir sensor reading, then continue
+		    while(sbd.getDistance(0) <= 0) {
+        		containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+		   		sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
+		   		vc.setSteeringWheelAngle(0 * Constants::DEG2RAD);
+		   		vc.setSpeed(2);
+	        	Container c(Container::VEHICLECONTROL, vc);
+	        	getConference().send(c);
+		    }	
+
+
+		    double totalPath = 0;
 
         	while(!found) {
 
-        		containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
+        		containerSensorBoardData = getKeyValueDataStore().get(Container::USER_DATA_0);
+		   		sbd = containerSensorBoardData.getData<SensorBoardData> ();
+		   		containerVehicleData = getKeyValueDataStore().get(Container::VEHICLEDATA);
 		   		vd = containerVehicleData.getData<VehicleData> ();
-		   		desiredSteeringWheelAngle = 0;
-		    	vc.setSpeed(1);
-	        	
+
+		   		//Right IR and right US can't see anything, means we're at the end.
+        		if(sbd.getDistance(4) <= 0 && sbd.getDistance(0) <= 0) {
+   					return;
+        		}
+
+        		//Drop the float, check if it's -1 or not.
+        		int distance = sbd.getDistance(0);
+
+        		//If gap, and the total path is 0, ie a start hasn't been found
+		   		if(distance == -1 && totalPath <= 0) {
+		   		 	totalPath = vd.getAbsTraveledPath();
+		   		}
+
+		   		//Another object deteceted, check gap size
+		   		else if (distance > -1) {
+
+		   			if(vd.getAbsTraveledPath() - totalPath >= 3 && totalPath > 0) {
+		   				//Spot found - Stop here.
+		   				found = true;
+	   				}
+
+	   				totalPath = 0;
+		   		}
+
+
+		   		vc.setSteeringWheelAngle(0 * Constants::DEG2RAD);
+		   		vc.setSpeed(1);
+	        	Container c(Container::VEHICLECONTROL, vc);
+	        	getConference().send(c);
+
 	    	}
 
-		    vc.setSteeringWheelAngle(desiredSteeringWheelAngle * Constants::DEG2RAD);
+		    vc.setSteeringWheelAngle(0 * Constants::DEG2RAD);
+		   	vc.setSpeed(0);
 	        Container c(Container::VEHICLECONTROL, vc);
 	        getConference().send(c);
+        	std::cout << "Parking spot found" << std::endl;
+
+	        //Finished finding spot, sending control to parking practice
         }
 } // msv
 
+
+//0 = IR Right, 1 = IR Rear, 2 = IR Left, 
+//3 = US FrontCenter, 4 = US FrontRight, 5 = US FrontLeft
