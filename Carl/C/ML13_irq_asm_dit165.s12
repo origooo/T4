@@ -1,0 +1,110 @@
+*       --------------------------------------------
+*	Course DIT165 : Ass-routines for exercise 6_2
+*	ML13_irq_asm_dit165.s12 
+*	event driven "door automat"
+*	2013-02-24
+*	NOTE:  Do not shange any in this modul !!
+*      ---------------------------------------------
+
+*       abs a special segment for the assembler  
+	segment	abs
+	
+*   Constants to be send to the global variable _irqType
+
+TIME_OUT		EQU	32
+
+* ------------- Defines (addresses and flags)for RTC-modul in HC12
+CRGFLG			EQU	$37	 
+CRGINT			EQU	$38
+RTICTL			EQU	$3B
+* Flagga 
+RTIF			EQU	$80
+
+* Timebase ( see CRG-modul HCS12)
+* In this version we just use the simulator and need not to define any.
+* If simulator you need to define SIM in preferences for the assembler.
+
+*   #ifdef SIM
+TimeBase	EQU	%00010000	kortast möjliga	
+*   #else
+*       TimeBase	EQU	%01111001	längsta möjliga		
+*   #endif
+
+*--------------------------------------------------------------------
+*------- Program segment (text) -------------------------------------
+	segment	text
+	
+	extern	_interruptType		Must be declarated in the main C-modul as global
+*					Will be assignes in this modul with TIME_OUT	
+		
+*-----------------------------------------------------------------------
+	define	_standby
+	entry		_standby
+_standby:
+	WAI			Wait for an interrupt request (IRQ)
+	RTS
+	exit	_standby
+
+*-----------------------------------------------------------------------
+
+	define	_timerSetup       Call from the mainprogram
+
+	entry	_timerSetup
+_timerSetup:
+
+*Interruptvector for timerirq must be configured
+	LDX	#ptimirq
+	STX	$3FF0		Exception vector for RTC
+	RTS
+	
+	exit	_timerSetup
+*------------------------------------------------------------------------
+	
+
+	define _setTimeout
+
+*	max 255 seconds delay..	
+_setTimeout:
+	PSHY
+	TSY
+	LDD	4,Y	      Number of delay in seconds
+*
+*	With 8 MHz HC12
+*	Longest timebase is 10 * 2**16
+*	= 655360 cykles = 0,08192 seconds
+* 	= 12,2 irq/second
+	LDAA	#12
+	MUL			Number of IRQ before delay end
+* Plausible control ...
+	BEQ	set_tim_exit
+	STD	delay_count
+	LDAA	#TimeBase		See above
+	STAA	RTICTL
+	MOVB	#$80,CRGINT		set RTIE-bit for start of timer
+set_tim_exit
+	PULY
+	RTS	
+
+*-------------------------------------------------------------------------
+
+* Exception from the real-time clock
+ptimirq:
+	
+	BSET	CRGFLG,#RTIF kvittera avbrott
+	LDD	delay_count
+	BEQ	timeout
+	SUBD	#1
+	STD	delay_count
+	RTI
+
+* At timeout, stop the timer
+timeout:
+	CLR	RTICTL
+	LDD	#TIME_OUT
+	STD	_interruptType	 
+	RTI
+
+	bss
+delay_count:	RMB	2	static, exporteras inte...
+
+*------------------------ Program ends --------------------------------------------	
