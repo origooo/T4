@@ -5,7 +5,7 @@ DIR2="/opt/msv/bin/2014/DIT-168/project-template"
 CID="111"
 FREQ="10"
 
-components=("supercomponent" "cockpit" "vehicle" "irus") # "camgen" "lanedetector" "driver")
+components=("driver")
 
 DELAY="1"
 TAB_DELAY="10"
@@ -19,7 +19,6 @@ for c in "${components[@]}"
 			else
 				COMPONENT_PATH="${DIR1}"
 		fi
-		xdotool sleep ${DELAY}
 		wmctrl -i -a $WINDOW_ID
 		xdotool key ctrl+shift+t
 		xdotool sleep ${DELAY}/${TAB_DELAY}
