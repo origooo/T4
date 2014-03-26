@@ -34,14 +34,8 @@ namespace msv {
 
 
         Driver::Driver(const int32_t &argc, char **argv) :
-	        ConferenceClientModule(argc, argv, "Driver"),
-	        TimeCounter (0),
-			TimeSlice (0),
-			OvertakingDetected (false),
-			MadeTurn(false),
-			PassedCar (false) 
-			{
-        }
+	        ConferenceClientModule(argc, argv, "Driver"){ 
+	        }
 
 
         Driver::~Driver() {}
@@ -58,6 +52,9 @@ namespace msv {
         ModuleState::MODULE_EXITCODE Driver::body() {
 
         	int Counter = 0;
+        	bool OvertakingDetected = false;
+        	bool MadeTurn = false;
+        	bool PassedCar = false;
 
 	        while (getModuleState() == ModuleState::RUNNING) {
                 // In the following, you find example for the various data sources that are available:
@@ -82,54 +79,65 @@ namespace msv {
 		        SteeringData sd = containerSteeringData.getData<SteeringData> ();
 		        cerr << "Most recent steering data: '" << sd.toString() << "'" << endl;
 
-				// Create vehicle control data.
+				
+		        
 		        VehicleControl vc;
-
+				
+				vc.setSpeed(0.4); //constant speed
+		        
+				//################### Sensor ID:s ###################
 		        //0 = IR FrontRight, 1 = IR Rear, 2 = IR FrontLeft, 
 		        //3 = US FrontCenter, 4 = US FrontRight, 5 = US FrontLeft
 
-
 		        
+		        //Getting sensor output
+		        int UltraSonicFrontCenter = sbd.getDistance(3);
 
-		        
-                // Design your control algorithm here depending on the input data from above.
-                int UltraSonicFrontCenter = sbd.getDistance(3);
-              	//int UltraSonicFrontRight = sbd.getDistance(4);
-				//int InfraRedFrontRight = sbd.getDistance(0); 
 
-				vc.setSpeed(0.4);
 
+		        //If UltraSonicFrontCenter detects object < 9; go into Overtaking
 				if (UltraSonicFrontCenter < 9) {
 					OvertakingDetected = true;
 				}
 
             	if (OvertakingDetected) {
-
+            		
+            		//printf("\n########################\n COUNTER===%d\n #########################\n", Counter);
             		//Turn left
-            		if (Counter <= 35) {
+            		if (Counter <= 120) {
 		        		vc.setSteeringWheelAngle(-15 * Constants::DEG2RAD);
 		        		MadeTurn = true;
+		       
 		        	}
-					
-					//Turn right
-		        	else if (MadeTurn && Counter <= 70) { //InfraRedFrontRight != -1 && 
-		        		vc.setSteeringWheelAngle(15 * Constants::DEG2RAD);
+
+					//Drive straight alongside the object
+		        	else if (MadeTurn && Counter <= 220) {
+		        		vc.setSteeringWheelAngle(0);
 		        		PassedCar = true;
 		        	}
-		        	//Finished 
-		        	else if (PassedCar) { //InfraRedFrontRight == -1 && 
-	        			vc.setSteeringWheelAngle(0);
+
+		        	//Turn right, back to the lane 
+		        	else if (PassedCar && Counter <= 510) {  
+	        			vc.setSteeringWheelAngle(15 * Constants::DEG2RAD);
 	        			MadeTurn = false;
-	        			vc.setSpeed(0);
+	        		}
+
+	        		//Done with scenario, reset counter and exit loop
+	        		else {
+	        			Counter = -1; //Setting it to -1 because it will be incremented below
+	        			PassedCar = false;
 	        			OvertakingDetected = false;
-	        		}			        	
+	        		}
+		        	
 	        		Counter++;
             	}
+            	
+            	//Switch back to normal lane following here
+            	else  {
+        			vc.setSteeringWheelAngle(0);
+        			//Counter = 0;
 
-           
-
-                // With setSpeed you can set a desired speed for the vehicle in the range of -2.0  
-                // backwards) .. 0 (stop) .. +2.0 (forwards)
+        		}	
 		        
                 // With setSteeringWheelAngle, you can steer in the range of -26 (left) .. 0
                 // (straight) .. +25 (right)
