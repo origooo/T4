@@ -5,7 +5,7 @@ DIR2="/opt/msv/bin/2014/DIT-168/project-template"
 CID="111"
 FREQ="10"
 
-components=("supercomponent" "cockpit" "vehicle" "irus") # "camgen" "lanedetector" "driver")
+components=("supercomponent" "cockpit" "vehicle" "irus" "camgen")
 
 DELAY="1"
 TAB_DELAY="10"
