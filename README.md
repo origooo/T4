@@ -1,5 +1,4 @@
-Term4-C_collaboration
-=====================
-This is the coolest repo ever!
+# Group Phoenix' Embedded C collaboration
+---------------------------------------
 
-Nah... Just for school related collaboration. So nothing to get here!
+It's as **simple**-_pimple_ as that!
