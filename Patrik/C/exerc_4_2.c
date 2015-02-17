@@ -36,13 +36,13 @@ int main(int argc, char* argv[]) {
 		// To just allow AB as input is just silly (;
 
 		int arg1Subtraction = 55;
-		int arg2Subtraction = 55;
+		// int arg2Subtraction = 55;
 
 		if (argv[1][0] < 'A') { arg1Subtraction = 48;}
-		if (argv[1][1] < 'A') { arg2Subtraction = 48;}
+		if (argv[1][1] < 'A') { arg1Subtraction = 48;}
 
 		arg = toupper(argv[1][0] - arg1Subtraction) << 4;
-		arg = arg | toupper(argv[1][1] - arg2Subtraction);
+		arg = arg | toupper(argv[1][1] - arg1Subtraction);
 		
 		myByte mb;
 		mb.engine = arg >> 7;
